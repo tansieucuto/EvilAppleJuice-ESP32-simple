@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-enum PacketType { APPLE_AUDIO, APPLE_SETUP };
+enum PacketType { APPLE_AUDIO, APPLE_ACTION };
 struct AppleDevice {
   const char* name;
   uint8_t modelId;
@@ -31,21 +31,26 @@ enum DeviceIndex : uint8_t {
   BEATS_SOLO_BUDS,
   SOFTWARE_UPDATE,
   POWERBEATS_FIT,
-  // Setup (23 bytes, ID at index 13)
-  APPLETV_SETUP,
-  TRANSFER_NUMBER,
-  APPLETV_PAIR,
-  SETUP_NEW_PHONE,
-  HOMEPOD_SETUP,
-  APPLETV_HOMEKIT_SETUP,
-  APPLETV_KEYBOARD_SETUP,
-  TV_COLOR_BALANCE,
-  APPLETV_NEW_USER,
-  VISION_PRO,
-  APPLETV_CONNECTING_TO_NETWORK,
-  APPLETV_APPLEID_SETUP,
-  APPLETV_WIRELESS_AUDIO_SYNC,
+
+  // FUCK APPLE, idk i just use 11 byte and id at index 7
+  ACTION_APPLETV_SETUP,
+  ACTION_APPLETV_PAIR,
+  ACTION_SETUP_NEW_PHONE,
+  ACTION_HOMEPOD_SETUP,
+  ACTION_APPLETV_HOMEKIT_SETUP,
+  ACTION_APPLETV_KEYBOARD_SETUP,
+  ACTION_TV_COLOR_BALANCE,
+  ACTION_APPLETV_NEW_USER,
+  ACTION_APPLETV_CONNECTING_TO_NETWORK,
+  ACTION_APPLETV_APPLEID_SETUP,
+  ACTION_ESIM_TRANSFER,
+  ACTION_HOMEPOD_STEREO_PAIR,
+  ACTION_AUDIO_SYNC,
+  ACTION_WATCH_COMPANION,
+  ACTION_VISION_PRO,
+
   NUM_DEVICES
+
 };
 
 const AppleDevice ALL_DEVICES[] = {
@@ -75,22 +80,22 @@ const AppleDevice ALL_DEVICES[] = {
   {"Software update", 0x2e, APPLE_AUDIO},
   {"Powerbeats fit", 0x2f, APPLE_AUDIO},
 
-  // Setup Devices (23 bytes, ID at index 13)
-  // These are more general home devices
-  // It seems these can work over long distances, especially AppleTV Setup
-  {"AppleTV Setup", 0x01, APPLE_SETUP},
-  {"Transfer Number", 0x02, APPLE_SETUP},
-  {"AppleTV Pair", 0x06, APPLE_SETUP},
-  {"Setup New Phone", 0x09, APPLE_SETUP},
-  {"Homepod Setup", 0x0b, APPLE_SETUP},
-  {"AppleTV Homekit Setup", 0x0d, APPLE_SETUP},
-  {"AppleTV Keyboard Setup", 0x13, APPLE_SETUP},
-  {"TV Color Balance", 0x1e, APPLE_SETUP},
-  {"AppleTV New User", 0x20, APPLE_SETUP},
-  {"Vision Pro", 0x24, APPLE_SETUP},
-  {"AppleTV Connecting to Network", 0x27, APPLE_SETUP},
-  {"AppleTV AppleID Setup", 0x2b, APPLE_SETUP},
-  {"AppleTV Wireless Audio Sync", 0xc0, APPLE_SETUP},
+  //action devices
+  {"Action AppleTV Setup", 0x01, APPLE_ACTION},
+  {"Action AppleTV Pair", 0x06, APPLE_ACTION},
+  {"Action Setup New Phone", 0x09, APPLE_ACTION},
+  {"Action Homepod Setup", 0x0b, APPLE_ACTION},
+  {"Action AppleTV Homekit Setup", 0x0d, APPLE_ACTION},
+  {"Action AppleTV Keyboard Setup", 0x13, APPLE_ACTION},
+  {"Action TV Color Balance", 0x1e, APPLE_ACTION},
+  {"Action AppleTV New User", 0x20, APPLE_ACTION},
+  {"Action AppleTV Connecting to Network", 0x27, APPLE_ACTION},
+  {"Action AppleTV AppleID Setup", 0x2b, APPLE_ACTION},
+  {"Action eSIM Transfer", 0x02, APPLE_ACTION},
+  {"Action Homepod Stereo Pair", 0x0c, APPLE_ACTION},
+  {"Action Audio Sync", 0x10, APPLE_ACTION},
+  {"Action Watch Companion", 0x1c, APPLE_ACTION},
+  {"Action Vision Pro", 0x24, APPLE_ACTION}
 };
 
 void generatePacket(const AppleDevice& device, uint8_t* buffer, size_t& outLength);
