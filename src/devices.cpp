@@ -13,15 +13,19 @@ void generatePacket(const AppleDevice& device, uint8_t* buffer, size_t& outLengt
       buffer[7] = device.modelId;
       memcpy(buffer + 8, body, 11);
   } 
-  else if (device.type == APPLE_SETUP) {
-      outLength = 23;
-      // The common 23-byte setup prefix
-      uint8_t prefix[] = {0x16, 0xff, 0x4c, 0x00, 0x04, 0x04, 0x2a, 0x00, 0x00, 0x00, 0x0f, 0x05, 0xc1};
-      // The common 23-byte setup suffix (starting after index 13)
-      uint8_t suffix[] = {0x60, 0x4c, 0x95, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00};
-      
-      memcpy(buffer, prefix, 13);
-      buffer[13] = device.modelId; // In "Short" packets, the ID is at index 13
-      memcpy(buffer + 14, suffix, 9);
+  else if (device.type == APPLE_ACTION) {
+    outLength = 11;
+    buffer[0] = 0x0A;
+    buffer[1] = 0xFF;
+    buffer[2] = 0x4C;
+    buffer[3] = 0x00;
+    buffer[4] = 0x0F;
+    buffer[5] = 0x05;
+    buffer[6] = 0xC0;
+    
+    buffer[7] = device.modelId; 
+    buffer[8] = random(256);   
+    buffer[9] = random(256);
+    buffer[10] = random(256);
   }
 }
